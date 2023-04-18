@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title></title>
+        <style></style>
+    </head>
+    <body>
+        <h1>Was it hood enought?</h1>
+        <button>Let's ask</button>
+        <p>I do not know</p>
+        <figure></figure>
+
+        <script>
+            const MyService = (() => {
+                return {
+                    question: async () => {
+                        const res = await fetch('https://yesno.wtf/api');
+                        return res.json();
+                    },
+                };
+            })();
+
+            const getTextItem = () => document.querySelector('p');
+
+            const updateText = (a) => {
+                const textItem = getTextItem();
+                textItem.className = '';
+                textItem.classList.add(a === 'no' ? 'no' : 'ok');
+                textItem.innerText = answer;
+            };
+
+            const setImage = (url) => {
+                const cont = document.querySelector('figure');
+                let image = cont.querySelector('img');
+                if (!image) {
+                    image = document.createElement('img');
+                    cont.appendChild(image);
+                }
+                image.setAttribute('src', url);
+            };
+
+            const clickHandler = (event) => {
+                event.preventDefault();
+                const textItem = getTextItem();
+                textItem.innerText = 'Wait for it...';
+                if (!textItem.classList.contains('dunno')) {
+                    textItem.classList.add('dunno');
+                }
+
+                event.preventDefault();
+                MyService.question();
+            };
+            const button = document.querySelector('button');
+            button.addEventListener('click', clickHandler);
+        </script>
+    </body>
+</html>
